@@ -6,20 +6,18 @@ const PORT = 3300;
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
-app.get("/dbConnect", (req, res) => {
-  console.log(req.query);
-  console.log(req.body);
-  const client = new Client(req.query);
-
-  client.connect();
-  client.query(req.body.query, (err, result) => {
-    if (!err) {
-      res.send(result.rows);
-    }
-  });
-  client.end;
-});
-
 app.listen(PORT, () => {
   console.log(`Sever is now listening at port ${PORT}`);
+});
+
+app.get("/dbConnect", async (req, res) => {
+  try {
+    const client = new Client(req.body.client);
+    await client.connect();
+    const results = await client.query(req.body.query);
+    res.send(results.rows);
+    await client.end();
+  } catch (error) {
+    console.log(error);
+  }
 });
