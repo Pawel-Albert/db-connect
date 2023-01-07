@@ -5,11 +5,8 @@ const { Client } = require("pg");
 const PORT = 3300;
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
-app.listen(PORT, () => {
-  console.log("Sever is now listening at port ${PORT}");
-});
 
-app.get("/users", (req, res) => {
+app.get("/dbConnect", (req, res) => {
   console.log(req.query);
   console.log(req.body);
   const client = new Client(req.query);
@@ -21,4 +18,8 @@ app.get("/users", (req, res) => {
     }
   });
   client.end;
+});
+
+app.listen(PORT, () => {
+  console.log(`Sever is now listening at port ${PORT}`);
 });

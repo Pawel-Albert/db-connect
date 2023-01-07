@@ -1,7 +1,6 @@
 {
   "name": "db",
   "version": "1.0.0",
-  "description": "",
   "main": "db.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,5 +10,15 @@
   "dependencies": {
     "express": "^4.18.2",
     "pg": "^8.8.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pawel-Albert/db-connect.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/Pawel-Albert/db-connect/issues"
+  },
+  "homepage": "https://github.com/Pawel-Albert/db-connect#readme",
+  "description": ""
 }
