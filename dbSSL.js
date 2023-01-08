@@ -3,9 +3,7 @@ const https = require("https");
 const { Client } = require("pg");
 const fs = require("fs");
 const path = require("path");
-const bodyParser = require("body-parser");
 
-const PORT = 3300;
 const app = express();
 const options = {
   key: fs.readFileSync(path.join(__dirname, "./certs/key.pem")),
@@ -13,13 +11,13 @@ const options = {
 };
 const sslserver = https.createServer(options, app);
 
+const PORT = 3300;
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
 sslserver.listen(PORT, () => {
   console.log(`Sever is now listening at port ${PORT}`);
 });
-
 app.get("/dbConnect", async (req, res) => {
   const client = new Client({
     host: process.argv[2],
