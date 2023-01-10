@@ -1,19 +1,15 @@
 const express = require("express");
-const app = express();
 const { Client } = require("pg");
-
-console.log(process.argv[2]);
-const PORT = 3300;
 const bodyParser = require("body-parser");
+
+const app = express();
+const PORT = 3300;
 app.use(bodyParser.json());
 
-app.listen(PORT, () => {
-  console.log(`Sever is now listening at port ${PORT}`);
-});
 app.get("/dbConnect", async (req, res) => {
   const client = new Client({
     host: process.argv[2],
-    port: Number(process.argv[3]),
+    port: process.argv[3],
     user: process.argv[4],
     password: process.argv[5],
     database: process.argv[6],
@@ -31,4 +27,8 @@ app.get("/dbConnect", async (req, res) => {
     console.log(error);
   }
   await client.end();
+});
+
+app.listen(PORT, () => {
+  console.log(`Sever is now listening at port ${PORT}`);
 });

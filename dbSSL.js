@@ -10,14 +10,11 @@ const options = {
   cert: fs.readFileSync(path.join(__dirname, "./certs/cert.pem")),
 };
 const sslserver = https.createServer(options, app);
-
 const PORT = 3300;
 const bodyParser = require("body-parser");
+
 app.use(bodyParser.json());
 
-sslserver.listen(PORT, () => {
-  console.log(`Sever is now listening at port ${PORT}`);
-});
 app.get("/dbConnect", async (req, res) => {
   const client = new Client({
     host: process.argv[2],
@@ -25,7 +22,6 @@ app.get("/dbConnect", async (req, res) => {
     user: process.argv[4],
     password: process.argv[5],
     database: process.argv[6],
-    idleTimeoutMillis: 10000,
   });
   await client.connect((err) => {
     if (err) {
@@ -40,4 +36,8 @@ app.get("/dbConnect", async (req, res) => {
     console.log(error);
   }
   await client.end();
+});
+
+sslserver.listen(PORT, () => {
+  console.log(`Sever is now listening at port ${PORT}`);
 });

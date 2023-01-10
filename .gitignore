@@ -1,2 +1,4 @@
 node_modules
-certs
+cert.pem
+csr.pem
+key.pem
