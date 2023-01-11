@@ -15,7 +15,10 @@ async function conectToDatabaseClient(req, res) {
       return;
     }
   });
-  if (req.body.query.toUpperCase().includes("DROP")) {
+  if (
+    req.body.query.toUpperCase().includes("DROP DATABASE") ||
+    req.body.query.toUpperCase().includes("DROP TABLE")
+  ) {
     res.status(400).json({
       errorMessage: `Did you just tried to 'DROP' that database or table? We don't do that here.`,
     });
