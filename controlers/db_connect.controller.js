@@ -53,7 +53,6 @@ async function conectToDatabaseClient(req, res) {
       });
       return;
     }
-    console.log(object);
     res.status(400).json({
       errorMessage: `Your query ended with error code: ${
         error.code ? error.code : "unknown error"
