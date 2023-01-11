@@ -37,11 +37,20 @@ async function conectToDatabaseClient(req, res) {
     if (error.code === "42703") {
       res.status(400).json({
         errorMessage: `Error: ${error.routine}.${
-          error.hint ? " " + error.hint : ""
+          error.hint
+            ? " " + error.hint
+            : " Wrong column name at position " + error.position
         }`,
       });
       return;
     }
+    if (error.code === "42P01") {
+      res.status(400).json({
+        errorMessage: `Error: Provieded relation (table) at position ${error.position} does not exist`,
+      });
+      return;
+    }
+    console.log(object);
     res.status(400).json({
       errorMessage: `Your query ended with error code: ${
         error.code ? error.code : "unknown error"
