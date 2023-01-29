@@ -48,7 +48,7 @@ $ node dbSSL.js "host" "port" "user" "password" "database"
 ```shell
 $ node dbSSL.js localhost 5432 postgres admin dvdrental
 ```
-> *To use "https" protocol user needs to generate own SSL Certificate. After generating needed files (there are lot of toturials how to do it), they need yo be placed in certs folder(projects root). Files that are used: Private Key "key.pem" and SSL certificate "cert.pem" 
+> *To use "https" protocol user needs to generate own SSL Certificate. After generating needed files (there are lot of toturials how to do it), they need to be placed in certs folder(projects root). Files that are used: Private Key "key.pem" and SSL certificate "cert.pem" 
 ## Features and how to use
 
 API is accessable on localhost and port 3300 - for "https" it would be https://localhost:3300/dbConnect*
