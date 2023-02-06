@@ -13,9 +13,11 @@ async function conectToDatabaseClient(req, res) {
   if (!validateQuery(query, res)) {
     return;
   }
-
+  let client;
+  // Client is defined outside the try/catch block, as when the catch block was executed
+  // Connections to database where not being terminated properly, leading to unwanted behaviour
   try {
-    const client = await createNewPostgresClient(
+    client = await createNewPostgresClient(
       DB_CLIENT_DATA.host,
       DB_CLIENT_DATA.port,
       DB_CLIENT_DATA.user,
@@ -27,6 +29,9 @@ async function conectToDatabaseClient(req, res) {
     client.end();
   } catch (error) {
     await errorHandler(error, res);
+    if (client) {
+      client.end();
+    }
   }
 }
 

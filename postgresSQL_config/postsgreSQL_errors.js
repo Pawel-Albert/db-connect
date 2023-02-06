@@ -264,7 +264,6 @@ const POSTGRES_ERROR_CODES = new Map([
 ]);
 
 async function errorHandler(error, res) {
-  console.log(error);
   if ((error.code === '42601') & POSTGRES_ERROR_CODES.has(`${error.code}`)) {
     res.status(400).json({
       errorMessage: `Syntax error at or near postion: ${error.position} of the requested SQL query`
@@ -289,7 +288,9 @@ async function errorHandler(error, res) {
   }
   res.status(400).json({
     errorMessage: `Your query ended with error code: ${
-      error.code ? error.code : 'unknown error'
+      error.code
+        ? error.code + ': ' + POSTGRES_ERROR_CODES.get(`${error.code}`)
+        : 'unknown error'
     }`
   });
 }

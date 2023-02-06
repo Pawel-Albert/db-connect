@@ -33,28 +33,40 @@ git clone https://github.com/Pawel-Albert/db-connect.git
 $ npm instal
 ```
 
-> To run "http" version of the API you can now run the code in terminal using comand:
+> To run "http" version of the API you can now run the code in terminal using comand (argument keys are case insensitive, for example you can pass "HOST" and "host"):
 
 ```shell
-$ node db.js "host" "port" "user" "password" "database"
+$ node db.js HOST:<host> PORT:<port> USER:<database_user_name> PASSWORD:<password> DATABASE:<database_name>
 ```
 
 > example with real arguments would look like:
 
 ```shell
-$ node db.js localhost 5432 postgres admin dvdrental
+$ node db.js HOST:localhost PORT:5432 USER:postgres PASSWORD:admin DATABASE:dvdrental
 ```
 
 > To run "https" version of the API you can now run the code in terminal using comand\*:
 
 ```shell
-$ node dbSSL.js "host" "port" "user" "password" "database"
+$ node dbSSL.js HOST:<host> PORT:<port> USER:<database_user_name> PASSWORD:<password> DATABASE:<database_name>
 ```
 
 > example with real arguments would look like:
 
 ```shell
-$ node dbSSL.js localhost 5432 postgres admin dvdrental
+$ node dbSSL.js HOST:localhost PORT:5432 USER:postgres PASSWORD:admin DATABASE:dvdrental
+```
+
+> you can also pass optional cache parameters for "stdTTL" and "checkperiod":
+
+```shell
+$ node dbSSL.js HOST:<host> PORT:<port> USER:<database_user_name> PASSWORD:<password> DATABASE:<database_name> stdTTL:<time_in_seconds> checkperiod:<time_in_seconds>
+```
+
+> example with real arguments would look like:
+
+```shell
+$ node dbSSL.js HOST:localhost PORT:5432 USER:postgres PASSWORD:admin DATABASE:dvdrental stdTTL:5 checkperiod:6
 ```
 
 > \*To use "https" protocol user needs to generate own SSL Certificate. After generating needed files (there are lot of toturials how to do it), they need to be placed in certs folder(projects root). Files that are used: Private Key "key.pem" and SSL certificate "cert.pem"
@@ -63,7 +75,7 @@ $ node dbSSL.js localhost 5432 postgres admin dvdrental
 
 API is accessable on localhost and port 3300 - for "https" it would be https://localhost:3300/dbConnect\*
 
-Basic caching implementation via "node-cache" - "stdTTL" (standard time to live) and "checkperiod" where used
+Basic caching implementation via "node-cache" - "stdTTL" (standard time to live) and "checkperiod" where used. If parameter is not provided, then default value will be set(can be changed in the code directly)
 
 For both protocols querying to database is done via one single object - key name "query" with a value that is type "string" (that string is raw SQL query).
 Example was performed on well known "dvdrental" database, often used to learn SQL in general.
@@ -81,4 +93,6 @@ Successful response in Postman will look like below:
 
 ## Todo
 
-- [ ] Provide better error handling
+- [x] Provide better error handling
+- [ ] Refactor how and were app(express) code is created to be more universal
+- [ ] Add more functionalities

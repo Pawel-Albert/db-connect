@@ -1,7 +1,10 @@
 const {Client} = require('pg');
 const NodeCache = require('node-cache');
+const {arrayExtractValue} = require('../utylis/helper.js');
 
-const myCache = new NodeCache({stdTTL: 10, checkperiod: 12});
+const STANDARD_TIME_TO_LIVE = arrayExtractValue(process.argv, 'STDTTL') || 10;
+const CHECK_PERIOD = arrayExtractValue(process.argv, 'CHECKPERIOD') || 12;
+const myCache = new NodeCache({stdTTL: STANDARD_TIME_TO_LIVE, checkperiod: CHECK_PERIOD});
 
 async function createNewPostgresClient(host, port, user, password, database) {
   const client = new Client({
@@ -23,11 +26,11 @@ async function createNewPostgresClient(host, port, user, password, database) {
 }
 
 const DB_CLIENT_DATA = {
-  host: process.argv[2],
-  port: process.argv[3],
-  user: process.argv[4],
-  password: process.argv[5],
-  database: process.argv[6]
+  host: arrayExtractValue(process.argv, 'HOST'),
+  port: arrayExtractValue(process.argv, 'PORT'),
+  user: arrayExtractValue(process.argv, 'USER'),
+  password: arrayExtractValue(process.argv, 'PASSWORD'),
+  database: arrayExtractValue(process.argv, 'DATABASE')
 };
 
 async function runQuery(client, query) {
