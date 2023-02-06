@@ -102,6 +102,6 @@ Successful response in Postman will look like below:
 
 - [x] Provide better error handling
 
-- [ ] Refactor how and were app(express) code is created to be more universal
+- [x] Refactor how and were app(express) code is created to be more universal
 
 - [ ] Add more functionalities
