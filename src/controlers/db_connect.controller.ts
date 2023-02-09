@@ -1,21 +1,17 @@
-const {
-  errorHandler,
-  validateQuery
-} = require('../postgresSQL_config/postsgreSQL_errors.js');
-const {
+import {Request, Response} from 'express';
+import {errorHandler, validateQuery} from '../postgresSQL_config/postsgreSQL_errors.js';
+import {
   createNewPostgresClient,
   DB_CLIENT_DATA,
   runQuery
-} = require('../postgresSQL_config/posgreSQL_client');
+} from '../postgresSQL_config/posgreSQL_client';
 
-async function conectToDatabaseClient(req, res) {
+export async function conectToDatabaseClient(req: Request, res: Response) {
   const query = req.body.query;
   if (!validateQuery(query, res)) {
     return;
   }
-  let client;
-  // Client is defined outside the try/catch block, as when the catch block was executed
-  // Connections to database where not being terminated properly, leading to unwanted behaviour
+  let client: any;
   try {
     client = await createNewPostgresClient(
       DB_CLIENT_DATA.host,
@@ -27,12 +23,10 @@ async function conectToDatabaseClient(req, res) {
     const result = await runQuery(client, query);
     res.send(result.rows);
     client.end();
-  } catch (error) {
+  } catch (error: any) {
     await errorHandler(error, res);
     if (client) {
       client.end();
     }
   }
 }
-
-module.exports = {conectToDatabaseClient};

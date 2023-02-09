@@ -1,7 +1,9 @@
-const https = require('https');
-const http = require('http');
-const {arrayExtractValue} = require('./utylis/helper.js');
-const {app, options} = require('./app');
+import https from 'https';
+import http from 'http';
+import {arrayExtractValue} from './utylis/helper.js';
+import {app, options} from './app';
+import sourceMapSupport from 'source-map-support';
+sourceMapSupport.install();
 
 const server = arrayExtractValue(process.argv, 'SSL')
   ? https.createServer(options, app)

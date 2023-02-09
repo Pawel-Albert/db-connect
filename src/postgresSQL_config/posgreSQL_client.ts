@@ -1,12 +1,18 @@
-const {Client} = require('pg');
-const NodeCache = require('node-cache');
-const {arrayExtractValue} = require('../utylis/helper.js');
+import {Client} from 'pg';
+import NodeCache from 'node-cache';
+import {arrayExtractValue} from '../utylis/helper.js';
 
 const STANDARD_TIME_TO_LIVE = arrayExtractValue(process.argv, 'STDTTL') || 10;
 const CHECK_PERIOD = arrayExtractValue(process.argv, 'CHECKPERIOD') || 12;
 const myCache = new NodeCache({stdTTL: STANDARD_TIME_TO_LIVE, checkperiod: CHECK_PERIOD});
 
-async function createNewPostgresClient(host, port, user, password, database) {
+export async function createNewPostgresClient(
+  host: string,
+  port: number,
+  user: string,
+  password: string,
+  database: string
+) {
   const client = new Client({
     host,
     port,
@@ -25,7 +31,7 @@ async function createNewPostgresClient(host, port, user, password, database) {
   });
 }
 
-const DB_CLIENT_DATA = {
+export const DB_CLIENT_DATA = {
   host: arrayExtractValue(process.argv, 'HOST'),
   port: arrayExtractValue(process.argv, 'PORT'),
   user: arrayExtractValue(process.argv, 'USER'),
@@ -33,7 +39,7 @@ const DB_CLIENT_DATA = {
   database: arrayExtractValue(process.argv, 'DATABASE')
 };
 
-async function runQuery(client, query) {
+export async function runQuery(client: any, query: string) {
   const cachedResult = await myCache.get(query);
   if (cachedResult) {
     return cachedResult;
@@ -43,4 +49,3 @@ async function runQuery(client, query) {
   myCache.set(query, results);
   return results;
 }
-module.exports = {createNewPostgresClient, DB_CLIENT_DATA, runQuery};

@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["es6"],
+    "strict": true,
+    "skipLibCheck": true,
+    "noImplicitAny": true,
+    "allowJs": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    "sourceMap": true
+  }
+}

@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "main": "db.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "run": "node dist/my-app.js",
+    "build:watch": "tsc --watch",
+    "run:watch": "nodemon dist/my-app.js --watch dist",
+    "start": "npm-run-all --parallel build:watch run:watch"
   },
   "author": "",
   "license": "ISC",
@@ -11,7 +15,8 @@
     "express": "^4.18.2",
     "morgan": "^1.10.0",
     "node-cache": "^5.1.2",
-    "pg": "^8.8.0"
+    "pg": "^8.8.0",
+    "source-map-support": "^0.5.21"
   },
   "repository": {
     "type": "git",
@@ -22,5 +27,14 @@
     "url": "https://github.com/Pawel-Albert/db-connect/issues"
   },
   "homepage": "https://github.com/Pawel-Albert/db-connect#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/node": "^18.13.0",
+    "@types/pg": "^8.6.6",
+    "@types/source-map-support": "^0.5.6",
+    "nodemon": "^2.0.20",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^4.9.5"
+  }
 }
