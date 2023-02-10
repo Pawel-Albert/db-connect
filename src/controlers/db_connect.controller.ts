@@ -13,14 +13,16 @@ export async function conectToDatabaseClient(req: Request, res: Response) {
   }
   let client: any;
   try {
-    client = await createNewPostgresClient(
-      DB_CLIENT_DATA.host,
-      DB_CLIENT_DATA.port,
-      DB_CLIENT_DATA.user,
-      DB_CLIENT_DATA.password,
-      DB_CLIENT_DATA.database
-    );
+    const host = typeof DB_CLIENT_DATA.host === 'string' ? DB_CLIENT_DATA.host : '';
+    const port = typeof DB_CLIENT_DATA.port === 'string' ? DB_CLIENT_DATA.port : '';
+    const user = typeof DB_CLIENT_DATA.user === 'string' ? DB_CLIENT_DATA.user : '';
+    const password =
+      typeof DB_CLIENT_DATA.password === 'string' ? DB_CLIENT_DATA.password : '';
+    const database =
+      typeof DB_CLIENT_DATA.database === 'string' ? DB_CLIENT_DATA.database : '';
+    client = await createNewPostgresClient(host, port, user, password, database);
     const result = await runQuery(client, query);
+
     res.send(result.rows);
     client.end();
   } catch (error: any) {

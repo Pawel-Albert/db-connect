@@ -105,3 +105,5 @@ Successful response in Postman will look like below:
 - [x] Refactor how and were app(express) code is created to be more universal
 
 - [ ] Add more functionalities
+
+- [ ] Update README file for .env and TypeScript implementation

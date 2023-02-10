@@ -9,7 +9,6 @@ export const options = {
   key: fs.readFileSync(path.join(__dirname, '../certs/key.pem')),
   cert: fs.readFileSync(path.join(__dirname, '../certs/cert.pem'))
 };
-
 const bodyParser = require('body-parser');
 app.use(morgan('combined'));
 app.use(bodyParser.json());

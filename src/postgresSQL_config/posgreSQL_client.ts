@@ -1,14 +1,13 @@
 import {Client} from 'pg';
 import NodeCache from 'node-cache';
-import {arrayExtractValue} from '../utylis/helper.js';
 
-const STANDARD_TIME_TO_LIVE = arrayExtractValue(process.argv, 'STDTTL') || 10;
-const CHECK_PERIOD = arrayExtractValue(process.argv, 'CHECKPERIOD') || 12;
+const STANDARD_TIME_TO_LIVE: number = Number(process.env.STD_TLL) || 1;
+const CHECK_PERIOD: number = Number(process.env.CHECK_PERIOD) || 2;
 const myCache = new NodeCache({stdTTL: STANDARD_TIME_TO_LIVE, checkperiod: CHECK_PERIOD});
 
 export async function createNewPostgresClient(
   host: string,
-  port: number,
+  port: any,
   user: string,
   password: string,
   database: string
@@ -31,12 +30,20 @@ export async function createNewPostgresClient(
   });
 }
 
-export const DB_CLIENT_DATA = {
-  host: arrayExtractValue(process.argv, 'HOST'),
-  port: arrayExtractValue(process.argv, 'PORT'),
-  user: arrayExtractValue(process.argv, 'USER'),
-  password: arrayExtractValue(process.argv, 'PASSWORD'),
-  database: arrayExtractValue(process.argv, 'DATABASE')
+interface DbClientData {
+  host?: string;
+  port?: string;
+  user?: string;
+  password?: string;
+  database?: string;
+}
+
+export const DB_CLIENT_DATA: DbClientData = {
+  host: process.env.HOST,
+  port: process.env.DB_PORT,
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE
 };
 
 export async function runQuery(client: any, query: string) {
