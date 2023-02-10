@@ -1,5 +1,5 @@
-const {capitalizeFirstLetter, doubleQuotesToSingle} = require('../utylis/helper.js');
-
+import {capitalizeFirstLetter, doubleQuotesToSingle} from '../utylis/helper.js';
+import {Response} from 'express';
 const POSTGRES_ERROR_CODES = new Map([
   ['00000', 'successful_completion'],
   ['01000', 'warning'],
@@ -263,16 +263,26 @@ const POSTGRES_ERROR_CODES = new Map([
   ['XX002', 'index_corrupted']
 ]);
 
-async function errorHandler(error, res) {
-  if ((error.code === '42601') & POSTGRES_ERROR_CODES.has(`${error.code}`)) {
+type CustomError = {
+  message: string;
+  code?: string;
+  hint?: string;
+  position?: string;
+  routine?: string;
+};
+
+export async function errorHandler(error: CustomError, res: Response) {
+  if (error.code === '42601' && POSTGRES_ERROR_CODES.has(`${error.code}`)) {
     res.status(400).json({
       errorMessage: `Syntax error at or near postion: ${error.position} of the requested SQL query`
     });
     return;
   }
-  if ((error.code === '42703') & POSTGRES_ERROR_CODES.has(`${error.code}`)) {
+  if (error.code === '42703' && POSTGRES_ERROR_CODES.has(`${error.code}`)) {
     res.status(400).json({
-      errorMessage: `Error: ${capitalizeFirstLetter(error.routine)}.${
+      errorMessage: `Error: ${capitalizeFirstLetter(
+        error.routine ? error.routine : 'unknown'
+      )}.${
         error.hint
           ? ' ' + doubleQuotesToSingle(error.hint)
           : ' Wrong column name at position ' + error.position
@@ -280,7 +290,7 @@ async function errorHandler(error, res) {
     });
     return;
   }
-  if ((error.code === '42P01') & POSTGRES_ERROR_CODES.has(`${error.code}`)) {
+  if (error.code === '42P01' && POSTGRES_ERROR_CODES.has(`${error.code}`)) {
     res.status(400).json({
       errorMessage: `Error: Provieded relation (table) at position ${error.position} does not exist`
     });
@@ -295,7 +305,7 @@ async function errorHandler(error, res) {
   });
 }
 
-function validateQuery(query, res) {
+export function validateQuery(query: string, res: Response) {
   if (
     query.toUpperCase().includes('DROP DATABASE') ||
     query.toUpperCase().includes('DROP TABLE') ||
@@ -308,4 +318,3 @@ function validateQuery(query, res) {
   }
   return true;
 }
-module.exports = {errorHandler, validateQuery};

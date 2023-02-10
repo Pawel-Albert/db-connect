@@ -2,3 +2,5 @@ node_modules
 cert.pem
 csr.pem
 key.pem
+dist
+.env
