@@ -265,7 +265,7 @@ const POSTGRES_ERROR_CODES = new Map([
 
 type CustomError = {
   message: string;
-  code?: string;
+  code: string;
   hint?: string;
   position?: string;
   routine?: string;

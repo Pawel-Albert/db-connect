@@ -6,7 +6,7 @@ import {app, options} from './app';
 import sourceMapSupport from 'source-map-support';
 sourceMapSupport.install();
 
-const server = process.env.SSL
+const server: http.Server | https.Server = process.env.SSL
   ? https.createServer(options, app)
   : http.createServer(app);
 const PORT: number = Number(process.env.APP_PORT) || 3300;

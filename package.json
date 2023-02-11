@@ -1,12 +1,12 @@
 {
   "name": "db",
   "version": "1.0.0",
-  "main": "db.js",
+  "main": "dist/server.js",
   "scripts": {
     "build": "tsc",
-    "run": "node dist/my-app.js",
+    "run": "node dist/server.js",
     "build:watch": "tsc --watch",
-    "run:watch": "nodemon dist/my-app.js --watch dist",
+    "run:watch": "nodemon dist/server.js --watch dist",
     "start": "npm-run-all --parallel build:watch run:watch"
   },
   "author": "",
