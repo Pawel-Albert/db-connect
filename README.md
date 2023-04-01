@@ -4,17 +4,15 @@
 
 ## Project Description
 
-> Project is a simple application that allow user to connect to database and send raw queries via single endpoint, in response user receives queried data.
+> This project is a simple application that allows users to connect to a PostgreSQL database and send raw SQL queries via a single endpoint. In response, users receive the queried data.
 
-> In project as addition to node js, express was used to handle creation of single endpoint.
+> The project uses Node.js, Express, and TypeScript to create a single endpoint for handling database requests. Initially developed with JavaScript, the project was later migrated to TypeScript to improve type safety and maintainability.
 
-> Application have two files that can be run from terminal with additional arguments (credentials for database).They allow using endpoint via http and second with https(self singed cert)
+> The application supports both HTTP and HTTPS (with a self-signed certificate) and uses environment variables stored in a .env file for configuration.
 
-> Main purpose of the project is to provide ability to chain requests (using Postman) in situations that previous endpoints responses lacked data that was needed to reliably send next Postman request.
+> The primary purpose of this project is to provide the ability to chain requests (using Postman) in situations where previous endpoint responses lacked data needed to reliably send the next Postman request.
 
-> The second goal was to practice using node js and express and build something small but applicable to my current job.
-
-> Disclaimer: This design is simple and serves a clearly defined purpose. For this reason, the code is not DRY and may have some errors/simplifications.
+> The secondary goal was to practice using Node.js, Express, and TypeScript to build a small, yet practical application for real-world use (also applicable to my current job).
 
 ## Installation
 
@@ -30,80 +28,72 @@ git clone https://github.com/Pawel-Albert/db-connect.git
 
 ### Setup
 
-- Type in terminal
+1. Install dependencies:
 
 ```shell
-
-$ npm instal
-
+$ npm install
 ```
 
-> To run "https" version of the API you can now run the code in terminal using comand (argument keys are case insensitive, for example you can pass "HOST" and "host"), if you don't pass the SSL argument, default 'http' version would be executed:
+2. Create a `.env` file in the root of the project directory, and add your environment variables, example:
+
+```ini
+APP_PORT=3300
+SSL=TRUE
+STD_TTL=10
+CHECK_PERIOD=12
+
+HOST=localhost
+DB_PORT=5432
+USER=postgres
+PASSWORD=admin
+DATABASE=dvdrental
+```
+
+3. Build the TypeScript project:
 
 ```shell
-
-$ node server.js SSL:<truthy_value> HOST:<host> PORT:<port> USER:<database_user_name> PASSWORD:<password> DATABASE:<database_name>
-
+$ npm run build
 ```
 
-> example with real arguments would look like:
+### Running the server
+
+To run the server, simply execute:
 
 ```shell
-
-$ node server.js SSL:true HOST:localhost PORT:5432 USER:postgres PASSWORD:admin DATABASE:dvdrental
-
+$ npm run start
 ```
 
-> you can also pass optional cache parameters for "stdTTL" and "checkperiod":
+This will start the server with the settings provided in the `.env` file.
 
-```shell
-
-$ node server.js SSL:<truthy_value> HOST:<host> PORT:<port> USER:<database_user_name> PASSWORD:<password> DATABASE:<database_name> stdTTL:<time_in_seconds> checkperiod:<time_in_seconds>
-
-```
-
-> example with real arguments would look like:
-
-```shell
-
-$ node server.js SSL:true HOST:localhost PORT:5432 USER:postgres PASSWORD:admin DATABASE:dvdrental stdTTL:5 checkperiod:6
-
-```
-
-> \*To use "https" protocol user needs to generate own SSL Certificate. After generating needed files (there are lot of toturials how to do it), they need to be placed in certs folder(projects root). Files that are used: Private Key "key.pem" and SSL certificate "cert.pem"
+> Note: To use "https" protocol, users need to generate their own SSL Certificate. After generating the required files (there are a lot of tutorials on how to do it), they need to be placed in the `certs` folder (project's root). Files that are used: Private Key "key.pem" and SSL certificate "cert.pem"
 
 ## Features and how to use
 
-API is accessable on localhost and port 3300 - for "https" it would be https://localhost:3300/dbConnect\*
+The API is accessible on the `APP_PORT` specified in the .env file - for "https" it would be `https://localhost:3300/dbConnect\*`
 
-Basic caching implementation via "node-cache" - "stdTTL" (standard time to live) and "checkperiod" where used. If parameter is not provided, then default value will be set(can be changed in the code directly)
+Basic caching implementation via "node-cache" - "stdTTL" (standard time to live) and "checkperiod" are used. If a parameter is not provided, then the default value will be set (can be changed in the code directly)
 
-For both protocols querying to database is done via one single object - key name "query" with a value that is type "string" (that string is raw SQL query).
+For both protocols, querying the database is done via one single object - key name "query" with a value that is of type "string" (that string is a raw SQL query).
 
-Example was performed on well known "dvdrental" database, often used to learn SQL in general.
+Example was performed on the well-known "dvdrental" database, often used to learn SQL in general.
+
+Example query:
 
 ```
-
 {
-
-"query": "SELECT * FROM public.actor ORDER BY actor_id DESC"
-
+  "query": "SELECT * FROM public.actor ORDER BY actor_id DESC"
 }
-
 ```
 
 Successful response in Postman will look like below:
 
 ![https](https://user-images.githubusercontent.com/112585950/211434775-04fce5a4-217d-4a03-943f-8f3dd31957b0.png)
 
-> \*Please note that we need to deliberately allow our self signed certificate in Postman (on initial request it will throw error in the GUI)
+> Note: When using the "https" protocol with a self-signed certificate, you'll need to deliberately allow the certificate in Postman (on initial request, it will show an error in the GUI).
 
 ## Todo
 
 - [x] Provide better error handling
-
-- [x] Refactor how and were app(express) code is created to be more universal
-
+- [x] Refactor how and where app(express) code is created to be more universal
 - [ ] Add more functionalities
-
-- [ ] Update README file for .env and TypeScript implementation
+- [x] Update README file for .env and TypeScript implementation
